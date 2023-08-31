@@ -39,7 +39,7 @@ builder.Services.AddMvc();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+/*if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -49,16 +49,17 @@ else
 {
     app.UseExceptionHandler("/error");
     app.UseHsts();
-}
+}*/
+app.UseCors("corspolicy");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors("corspolicy");
 
-app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();
