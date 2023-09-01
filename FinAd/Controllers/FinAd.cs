@@ -211,7 +211,7 @@ namespace FinAd.Controllers
         // Adding new client data into clients Table
         [Authorize]
         [HttpPost("/newClientData")]
-        public IActionResult PostClient([FromBody] newClientsData newClient)
+        public IActionResult PostClient( newClientsData newClient)
         {
             /*var advisorList = new List<advisorSignup>();*/
             Console.WriteLine(newClient.Email + " " + newClient.RiskProfile);
@@ -354,6 +354,7 @@ namespace FinAd.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
             }
             return Ok("client is deleted");
         }

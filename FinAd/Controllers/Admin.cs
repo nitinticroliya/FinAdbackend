@@ -126,29 +126,70 @@ namespace FinAd.Controllers
         }
 
 
-
-
-       /* public interface ICSVService
+        // Delete existing Securites in database
+        /*[Authorize]*/
+        [HttpDelete("/deleteSecurities")]
+        public IActionResult DeleteScurities()
         {
-            public IEnumerable<T> ReadCSV<T>(Stream file);
+           /* var admin = GetCurrentAdmin();*/
+
+            String connnectionString = "Data Source=L-3Q8PHR3\\SQLEXPRESS;Initial Catalog=FinAdDatabase;Integrated Security=True";
+            using (SqlConnection connection = new(connnectionString))
+            {
+                try
+                {
+                    String sql = "DELETE FROM listofSecurities";
+                    connection.Open();
+                    using (SqlCommand command = new(sql, connection))
+                    {
+                        {
+                            Console.WriteLine(sql);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return NotFound("Not Deleted");
+                }
+            }
+            return Ok("Securities Deleted Successfully");
         }
 
 
-            private readonly ICSVService _csvService;
 
-            public EmployeeController(ICSVService csvService)
+
+        // Delete existing Securites in database
+        /*[Authorize]*/
+        [HttpPost("/addAllSecurities")]
+        public IActionResult AddScurities(SecuritiesList securities)
+        {
+            /*var admin = GetCurrentAdmin();*/
+
+            String connnectionString = "Data Source=L-3Q8PHR3\\SQLEXPRESS;Initial Catalog=FinAdDatabase;Integrated Security=True";
+            using (SqlConnection connection = new(connnectionString))
             {
-                _csvService = csvService;
+                try
+                {
+                    String sql = "INSERT INTO listOfSecurities (Asset_Class, Security_Name) " + "VALUES('" + securities.AssetClass + "', '" + securities.Securities + "')";
+                    connection.Open();
+                    using (SqlCommand command = new(sql, connection))
+                    {
+                        {
+                            Console.WriteLine(sql);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return NotFound("Not Added");
+                }
             }
-
-            [HttpPost("read-employees-csv")]
-            public async Task<IActionResult> GetEmployeeCSV([FromForm] IFormFileCollection file)
-            {
-                var employees = _csvService.ReadCSV<Employee>(file[0].OpenReadStream());
-
-                return Ok(employees);
-            }
-       */ 
+            return Ok("Securities Added Successfully");
+        }
 
 
     }
